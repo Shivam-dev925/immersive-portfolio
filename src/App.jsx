@@ -42,24 +42,52 @@ function SceneWarmup({ onReady }) {
 const projects = [
   {
     number: '01',
-    title: 'Raxa Health Platform',
-    description: 'A unified care platform connecting patient journeys, clinical workflows, and operational intelligence.',
-    tags: ['React', 'Design systems', 'Healthcare'],
+    title: 'Trackk — Trading, Reframed',
+    description: 'A complete mobile UI/UX revamp for a live stocks, F&O, and options platform used by 100K+ traders and rated 4.6 stars.',
+    meta: 'TradeBook · Jan—Feb 2025',
+    tags: ['Flutter', 'Fintech', 'Product design'],
     accent: '#a7f3d0',
   },
   {
     number: '02',
-    title: 'Clinical Command Center',
-    description: 'A dense, real-time workspace redesigned around clarity, prioritization, and safe clinical decisions.',
-    tags: ['Data visualization', 'UX architecture', 'Performance'],
+    title: 'Water Taxi Miami',
+    description: 'An end-to-end ticket booking experience spanning one-way and round-trip journeys, seat selection, and payment confirmation.',
+    meta: 'Contract · Feb 2024—Feb 2025',
+    tags: ['React', 'Booking UX', 'Frontend'],
     accent: '#bfdbfe',
   },
+]
+
+const raxaJourney = [
   {
-    number: '03',
-    title: 'AI Care Companion',
-    description: 'A conversational health experience that balances useful automation with trust and human oversight.',
-    tags: ['Generative UI', 'AI safety', 'Mobile'],
-    accent: '#ddd6fe',
+    year: '2022',
+    title: 'Building the foundation',
+    description: 'Joined Raxa to build patient and doctor experiences across React and Flutter, while migrating legacy onboarding from Ext.js.',
+    tags: ['React', 'Flutter', 'Architecture'],
+  },
+  {
+    year: '2023',
+    title: 'Connecting national health rails',
+    description: 'Integrated ABDM, NHA, HPR, and HFR workflows for secure health data, digital lockers, and certified doctor experiences.',
+    tags: ['ABDM', 'Health records', 'QCI'],
+  },
+  {
+    year: '2024',
+    title: 'Making delivery a system',
+    description: 'Architected CI/CD across remote iOS simulators, Android emulators, and stores—cutting manual testing effort by 70%.',
+    tags: ['CI/CD', 'AWS Device Farm', 'Testing'],
+  },
+  {
+    year: '2025',
+    title: 'From product to platform',
+    description: 'Led frontend architecture, reviews, and mentoring while shipping Raxa Assistant with real-time chat, subscriptions, and voice.',
+    tags: ['Leadership', 'Whisper AI', 'Subscriptions'],
+  },
+  {
+    year: 'Now',
+    title: 'An AI-native design practice',
+    description: 'Introduced MCP-powered design-to-code workflows and helped ship a complete web, iOS, and Android redesign in two months.',
+    tags: ['Figma MCP', 'Prompt → Design', '3 platforms'],
   },
 ]
 
@@ -125,7 +153,7 @@ function ProjectObjects({ activeProject, scrollRef, compact }) {
   return (
     <group ref={group} position={compact ? [0.5, 0, -10] : [1.8, 0, -10]} scale={compact ? 0.62 : 1}>
       {projects.map((project, index) => {
-        const angle = (index - 1) * 0.72
+        const angle = (index - (projects.length - 1) / 2) * 0.9
         return (
           <RoundedBox
             key={project.title}
@@ -170,7 +198,8 @@ function Header() {
       </button>
       <nav id="site-nav" className={open ? 'nav open' : 'nav'} aria-label="Main navigation">
         <a href="#about" onClick={() => setOpen(false)}>About</a>
-        <a href="#work" onClick={() => setOpen(false)}>Work</a>
+        <a href="#journey" onClick={() => setOpen(false)}>Journey</a>
+        <a href="#work" onClick={() => setOpen(false)}>Projects</a>
         <a href="#contact" onClick={() => setOpen(false)}>Contact</a>
       </nav>
     </header>
@@ -280,9 +309,34 @@ function App() {
           </div>
         </section>
 
+        <section id="journey" className="journey">
+          <div className="journey-heading" data-reveal>
+            <p className="section-index">02 / Raxa journey</p>
+            <h2>Four years of turning healthcare complexity into product momentum.</h2>
+            <p>Raxa Health · Lead Frontend Engineer · May 2022—Present</p>
+          </div>
+          <div className="journey-track">
+            {raxaJourney.map((chapter, index) => (
+              <article className="journey-card" data-reveal key={chapter.year} style={{ '--card-index': index }}>
+                <div className="journey-card-top"><span>{chapter.year}</span><span>0{index + 1}</span></div>
+                <div>
+                  <h3>{chapter.title}</h3>
+                  <p>{chapter.description}</p>
+                </div>
+                <ul>{chapter.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+              </article>
+            ))}
+          </div>
+          <div className="journey-metrics" data-reveal>
+            <p><strong>70%</strong><span>less manual testing</span></p>
+            <p><strong>2 mo</strong><span>three-platform redesign</span></p>
+            <p><strong>4+</strong><span>years building at Raxa</span></p>
+          </div>
+        </section>
+
         <section id="work" className="work section-grid">
           <div className="work-heading">
-            <p className="section-index">02 / Selected work</p>
+            <p className="section-index">03 / Freelance projects</p>
             <p className="work-instruction">{compact ? 'Tap a project to bring its object forward.' : 'Hover or focus a project to bring its object forward.'}</p>
           </div>
           <div className="project-list">
@@ -296,11 +350,12 @@ function App() {
               >
                 <p className="project-number">{project.number}</p>
                 <div className="project-copy">
+                  <p className="project-meta">{project.meta}</p>
                   <h3>{project.title}</h3>
                   <p>{project.description}</p>
                   <ul>{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
                 </div>
-                <a href="#case-study" aria-label={`View ${project.title} case study`}><ArrowUpRight /></a>
+                <a href="#contact" aria-label={`Discuss a project like ${project.title}`}><ArrowUpRight /></a>
               </article>
             ))}
           </div>
@@ -308,7 +363,7 @@ function App() {
 
         <section id="case-study" className="case-study">
           <div className="case-study-inner" data-reveal>
-            <p className="section-index">03 / Case study</p>
+            <p className="section-index">04 / Case study</p>
             <h2>Designing a calmer<br />clinical operating system.</h2>
             <div className="case-meta">
               <p><span>Role</span>Lead frontend engineering</p>
@@ -328,7 +383,7 @@ function App() {
         </section>
 
         <section id="contact" className="contact section-grid">
-          <p className="section-index">04 / Contact</p>
+          <p className="section-index">05 / Contact</p>
           <div data-reveal className="contact-copy">
             <p>Have a difficult interface or ambitious product?</p>
             <a href="mailto:chshivam815@gmail.com">Let’s make it clear.<ArrowUpRight /></a>
