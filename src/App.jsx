@@ -66,7 +66,7 @@ const projects = [
 ]
 
 const raxaPlatforms = [
-  { label: 'Web', detail: 'Live platform', href: 'https://www.raxa.io/raxaDesktop' },
+  { label: 'Web', detail: 'Live platform', href: 'https://app.raxa.io' },
   { label: 'iOS', detail: 'App Store', href: 'https://apps.apple.com/us/app/raxa/id719432782' },
   { label: 'Android', detail: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.raxa.EMR' },
 ]
