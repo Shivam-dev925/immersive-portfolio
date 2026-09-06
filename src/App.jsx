@@ -47,6 +47,10 @@ const projects = [
     meta: 'TradeBook · Jan—Feb 2025',
     tags: ['Flutter', 'Fintech', 'Product design'],
     accent: '#a7f3d0',
+    platforms: [
+      { label: 'Android', detail: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.we3.tradebook.app' },
+      { label: 'iOS', detail: 'App Store', href: 'https://apps.apple.com/in/app/trackk-stocks-options-trading/id1659276893' },
+    ],
   },
   {
     number: '02',
@@ -55,8 +59,30 @@ const projects = [
     meta: 'Contract · Feb 2024—Feb 2025',
     tags: ['React', 'Booking UX', 'Frontend'],
     accent: '#bfdbfe',
+    platforms: [
+      { label: 'iOS', detail: 'App Store', href: 'https://apps.apple.com/in/app/water-taxi-miami/id1545116369' },
+    ],
   },
 ]
+
+const raxaPlatforms = [
+  { label: 'Web', detail: 'Live platform', href: 'https://www.raxa.io/raxaDesktop' },
+  { label: 'iOS', detail: 'App Store', href: 'https://apps.apple.com/us/app/raxa/id719432782' },
+  { label: 'Android', detail: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.raxa.EMR' },
+]
+
+function PlatformLinks({ platforms, label }) {
+  return (
+    <div className="platform-links" aria-label={`${label} platform links`} style={{ '--platform-count': platforms.length }}>
+      {platforms.map((platform) => (
+        <a key={platform.label} href={platform.href} target="_blank" rel="noreferrer" onClick={(event) => event.stopPropagation()}>
+          <span><strong>{platform.label}</strong><small>{platform.detail}</small></span>
+          <ArrowUpRight size={15} />
+        </a>
+      ))}
+    </div>
+  )
+}
 
 const raxaJourney = [
   {
@@ -214,6 +240,7 @@ function App() {
   const [reducedMotion, setReducedMotion] = useState(false)
   const [compact, setCompact] = useState(false)
   const [sceneReady, setSceneReady] = useState(false)
+  const [openPlatforms, setOpenPlatforms] = useState(null)
   const year = useMemo(() => new Date().getFullYear(), [])
   const markSceneReady = useMemo(() => () => setSceneReady(true), [])
 
@@ -317,13 +344,30 @@ function App() {
           </div>
           <div className="journey-track">
             {raxaJourney.map((chapter, index) => (
-              <article className="journey-card" data-reveal key={chapter.year} style={{ '--card-index': index }}>
+              <article
+                className={openPlatforms === `journey-${index}` ? 'journey-card platforms-open' : 'journey-card'}
+                data-reveal
+                key={chapter.year}
+                style={{ '--card-index': index }}
+                tabIndex="0"
+                role="button"
+                aria-expanded={openPlatforms === `journey-${index}`}
+                aria-label={`${chapter.title}. Show Raxa platform links`}
+                onClick={() => setOpenPlatforms((value) => value === `journey-${index}` ? null : `journey-${index}`)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    setOpenPlatforms((value) => value === `journey-${index}` ? null : `journey-${index}`)
+                  }
+                }}
+              >
                 <div className="journey-card-top"><span>{chapter.year}</span><span>0{index + 1}</span></div>
                 <div>
                   <h3>{chapter.title}</h3>
                   <p>{chapter.description}</p>
                 </div>
                 <ul>{chapter.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
+                <PlatformLinks platforms={raxaPlatforms} label={`Raxa ${chapter.year}`} />
               </article>
             ))}
           </div>
@@ -343,10 +387,19 @@ function App() {
             {projects.map((project, index) => (
               <article
                 data-reveal
-                className={activeProject === index ? 'project active' : 'project'}
+                className={`${activeProject === index ? 'project active' : 'project'}${openPlatforms === `project-${index}` ? ' platforms-open' : ''}`}
                 key={project.title}
                 onMouseEnter={() => setActiveProject(index)}
                 onFocusCapture={() => setActiveProject(index)}
+                onClick={() => setOpenPlatforms((value) => value === `project-${index}` ? null : `project-${index}`)}
+                onKeyDown={(event) => {
+                  if ((event.key === 'Enter' || event.key === ' ') && event.target === event.currentTarget) {
+                    event.preventDefault()
+                    setOpenPlatforms((value) => value === `project-${index}` ? null : `project-${index}`)
+                  }
+                }}
+                tabIndex="0"
+                aria-expanded={openPlatforms === `project-${index}`}
               >
                 <p className="project-number">{project.number}</p>
                 <div className="project-copy">
@@ -355,7 +408,8 @@ function App() {
                   <p>{project.description}</p>
                   <ul>{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
                 </div>
-                <a href="#contact" aria-label={`Discuss a project like ${project.title}`}><ArrowUpRight /></a>
+                <button className="platform-trigger" type="button" aria-label={`Show ${project.title} platform links`}><ArrowUpRight /></button>
+                <PlatformLinks platforms={project.platforms} label={project.title} />
               </article>
             ))}
           </div>
