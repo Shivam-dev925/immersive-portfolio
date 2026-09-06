@@ -63,14 +63,25 @@ h1 em { color: transparent; -webkit-text-stroke: 1px rgba(247,248,250,.62); font
 .about h2 { margin: 0; font-size: clamp(38px, 5.3vw, 82px); line-height: 1.04; letter-spacing: -.055em; font-weight: 500; }
 .about-columns { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(30px, 6vw, 100px); margin-top: 70px; color: #b9bec7; font-size: 17px; line-height: 1.75; }
 
-.journey { position: relative; z-index: 2; padding: 150px clamp(24px, 6vw, 100px); overflow: hidden; background: #10131a; border-block: 1px solid var(--line); }
+.journey { position: relative; z-index: 2; padding: 150px clamp(24px, 6vw, 100px); overflow: hidden; background: radial-gradient(circle at 76% 18%, rgba(167,243,208,.075), transparent 26%), linear-gradient(135deg, #10131a, #0c0f15 64%); border-block: 1px solid var(--line); }
+.journey-atmosphere { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.journey-atmosphere span { position: absolute; border: 1px solid rgba(167,243,208,.09); border-radius: 50%; animation: journey-drift 14s ease-in-out infinite alternate; }
+.journey-atmosphere span:nth-child(1) { width: 520px; height: 520px; right: -170px; top: -230px; }
+.journey-atmosphere span:nth-child(2) { width: 290px; height: 290px; right: 2%; top: 4%; animation-delay: -4s; }
+.journey-atmosphere span:nth-child(3) { width: 110px; height: 110px; left: 3%; bottom: 8%; animation-delay: -8s; }
+@keyframes journey-drift { to { transform: translate3d(-24px, 18px, 0) scale(1.06); } }
 .journey-heading { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 3fr); gap: 48px; align-items: end; margin-bottom: 70px; }
 .journey-heading h2 { margin: 0; max-width: 940px; font-size: clamp(40px, 5.8vw, 86px); line-height: 1.02; letter-spacing: -.058em; font-weight: 500; }
 .journey-heading > p:last-child { grid-column: 2; margin: -18px 0 0; color: var(--muted); font: 400 11px 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
-.journey-track { display: grid; grid-template-columns: repeat(5, minmax(270px, 1fr)); gap: 14px; overflow-x: auto; padding: 2px 2px 20px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-snap-type: x proximity; }
-.journey-card { position: relative; min-height: 440px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: 24px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,.065), rgba(255,255,255,.018)); scroll-snap-align: start; transition: transform .35s ease, border-color .35s ease, background .35s ease; }
-.journey-card:hover { transform: translateY(-10px); border-color: rgba(167,243,208,.52); background: linear-gradient(145deg, rgba(167,243,208,.1), rgba(255,255,255,.02)); }
-.journey-card-top { display: flex; justify-content: space-between; color: var(--accent); font: 500 11px 'DM Mono', monospace; text-transform: uppercase; }
+.journey-track { position: relative; display: grid; grid-template-columns: repeat(5, minmax(270px, 1fr)); gap: 14px; overflow-x: auto; padding: 14px 2px 28px; scrollbar-width: thin; scrollbar-color: var(--accent) transparent; scroll-snap-type: x proximity; perspective: 1100px; }
+.journey-card { --tilt-x: 0deg; --tilt-y: 0deg; position: relative; min-height: 440px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; padding: 24px; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.018)); box-shadow: 0 28px 70px rgba(0,0,0,.16); scroll-snap-align: start; transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y)); transform-style: preserve-3d; transition: transform .18s ease-out, border-color .35s ease, background .35s ease, box-shadow .35s ease; }
+.journey-card::before { content: ''; position: absolute; inset: 0 0 auto; height: 2px; opacity: .5; background: linear-gradient(90deg, transparent, var(--accent), transparent); transform: scaleX(.28); transition: transform .4s ease, opacity .4s ease; }
+.journey-card::after { content: ''; position: absolute; width: 170px; height: 170px; right: -90px; top: -90px; border-radius: 50%; background: var(--accent); filter: blur(70px); opacity: .035; transition: opacity .35s ease; }
+.journey-card:hover { border-color: rgba(167,243,208,.52); background: linear-gradient(145deg, rgba(167,243,208,.1), rgba(255,255,255,.02)); box-shadow: 0 34px 90px rgba(0,0,0,.3); }
+.journey-card:hover::before, .journey-card:focus-within::before, .journey-card.platforms-open::before { transform: scaleX(1); opacity: 1; }
+.journey-card:hover::after { opacity: .12; }
+.journey-card-top { display: flex; justify-content: space-between; align-items: start; color: var(--accent); font: 500 11px 'DM Mono', monospace; text-transform: uppercase; }
+.journey-year { font-size: 18px; letter-spacing: -.04em; }
 .journey-card h3 { margin: 0 0 18px; font-size: 28px; line-height: 1.05; letter-spacing: -.04em; font-weight: 500; }
 .journey-card p { margin: 0; color: #aeb4be; font-size: 14px; line-height: 1.7; }
 .journey-card ul { display: flex; flex-wrap: wrap; gap: 7px; margin: 0; padding: 0; list-style: none; }
@@ -109,9 +120,11 @@ h1 em { color: transparent; -webkit-text-stroke: 1px rgba(247,248,250,.62); font
 
 .contact { min-height: 85vh; align-content: center; background: #090b10; }
 .contact-copy > p { color: #9298a3; margin: 0 0 20px; }
-.contact-copy > a { display: inline-flex; align-items: center; gap: 18px; font-size: clamp(48px, 7vw, 110px); line-height: .98; letter-spacing: -.065em; border-bottom: 1px solid rgba(255,255,255,.3); padding-bottom: 12px; }
-.contact-copy > a:hover { color: var(--accent); }
-.contact-copy svg { width: .65em; height: .65em; }
+.contact-copy > a { --magnet-x: 0px; --magnet-y: 0px; display: inline-flex; align-items: center; gap: 18px; font-size: clamp(48px, 7vw, 110px); line-height: .98; letter-spacing: -.065em; border-bottom: 1px solid rgba(255,255,255,.3); padding: 18px 20px 18px 0; transform: translate(var(--magnet-x), var(--magnet-y)); transition: color .25s ease, border-color .25s ease, transform .18s cubic-bezier(.2,.8,.2,1); will-change: transform; }
+.contact-copy > a:hover { color: var(--accent); border-color: var(--accent); }
+.contact-copy > a span { display: inline-block; }
+.contact-copy svg { width: .65em; height: .65em; transition: transform .3s ease; }
+.contact-copy > a:hover svg { transform: translate(8px, -8px) rotate(8deg); }
 footer { grid-column: 1 / -1; align-self: end; display: flex; justify-content: space-between; border-top: 1px solid var(--line); margin-top: 150px; padding-top: 22px; color: #858b95; font: 400 11px 'DM Mono', monospace; }
 footer div { display: flex; gap: 22px; }
 footer a { display: flex; align-items: center; gap: 7px; }

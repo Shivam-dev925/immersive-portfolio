@@ -84,6 +84,30 @@ function PlatformLinks({ platforms, label }) {
   )
 }
 
+function MagneticContactLink() {
+  const link = useRef()
+
+  const pullTowardPointer = (event) => {
+    if (!window.matchMedia('(pointer: fine)').matches) return
+    const bounds = link.current.getBoundingClientRect()
+    const x = (event.clientX - bounds.left - bounds.width / 2) * 0.12
+    const y = (event.clientY - bounds.top - bounds.height / 2) * 0.18
+    link.current.style.setProperty('--magnet-x', `${x}px`)
+    link.current.style.setProperty('--magnet-y', `${y}px`)
+  }
+
+  const release = () => {
+    link.current.style.setProperty('--magnet-x', '0px')
+    link.current.style.setProperty('--magnet-y', '0px')
+  }
+
+  return (
+    <a ref={link} className="magnetic-contact" href="mailto:chshivam815@gmail.com" onPointerMove={pullTowardPointer} onPointerLeave={release}>
+      <span>Let’s work together.</span><ArrowUpRight />
+    </a>
+  )
+}
+
 const raxaJourney = [
   {
     year: '2022',
@@ -294,6 +318,9 @@ function App() {
             duration: 0.9,
             ease: 'power3.out',
             scrollTrigger: { trigger: node, start: 'top 86%', once: true },
+            onComplete: () => {
+              if (node.classList.contains('journey-card')) gsap.set(node, { clearProps: 'transform' })
+            },
           })
         })
       }
@@ -337,6 +364,7 @@ function App() {
         </section>
 
         <section id="journey" className="journey">
+          <div className="journey-atmosphere" aria-hidden="true"><span /><span /><span /></div>
           <div className="journey-heading" data-reveal>
             <p className="section-index">02 / Raxa journey</p>
             <h2>Four years of turning healthcare complexity into product momentum.</h2>
@@ -354,6 +382,16 @@ function App() {
                 aria-expanded={openPlatforms === `journey-${index}`}
                 aria-label={`${chapter.title}. Show Raxa platform links`}
                 onClick={() => setOpenPlatforms((value) => value === `journey-${index}` ? null : `journey-${index}`)}
+                onPointerMove={(event) => {
+                  if (!window.matchMedia('(pointer: fine)').matches) return
+                  const bounds = event.currentTarget.getBoundingClientRect()
+                  event.currentTarget.style.setProperty('--tilt-x', `${((event.clientY - bounds.top) / bounds.height - 0.5) * -5}deg`)
+                  event.currentTarget.style.setProperty('--tilt-y', `${((event.clientX - bounds.left) / bounds.width - 0.5) * 5}deg`)
+                }}
+                onPointerLeave={(event) => {
+                  event.currentTarget.style.setProperty('--tilt-x', '0deg')
+                  event.currentTarget.style.setProperty('--tilt-y', '0deg')
+                }}
                 onKeyDown={(event) => {
                   if (event.key === 'Enter' || event.key === ' ') {
                     event.preventDefault()
@@ -361,7 +399,7 @@ function App() {
                   }
                 }}
               >
-                <div className="journey-card-top"><span>{chapter.year}</span><span>0{index + 1}</span></div>
+                <div className="journey-card-top"><span className="journey-year">{chapter.year}</span><span>0{index + 1}</span></div>
                 <div>
                   <h3>{chapter.title}</h3>
                   <p>{chapter.description}</p>
@@ -419,7 +457,7 @@ function App() {
           <p className="section-index">04 / Contact</p>
           <div data-reveal className="contact-copy">
             <p>Have a difficult interface or ambitious product?</p>
-            <a href="mailto:chshivam815@gmail.com">Let’s make it clear.<ArrowUpRight /></a>
+            <MagneticContactLink />
           </div>
           <footer>
             <p>© {year} Shivam Choudhary</p>
