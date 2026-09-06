@@ -21,14 +21,6 @@ a, button { color: inherit; }
 a { text-decoration: none; }
 button { font: inherit; }
 
-.startup { position: fixed; inset: 0; z-index: 80; display: grid; place-content: center; gap: 22px; background: #090b10; opacity: 1; visibility: visible; transition: opacity .42s ease, visibility 0s linear .42s; }
-.is-ready .startup { opacity: 0; visibility: hidden; pointer-events: none; }
-.startup-mark { justify-self: center; font-size: 30px; font-weight: 800; letter-spacing: -.06em; }
-.startup-mark span { margin-left: 3px; color: var(--accent); font-size: 9px; vertical-align: top; }
-.startup-track { width: 124px; height: 1px; overflow: hidden; background: rgba(255,255,255,.13); }
-.startup-track span { display: block; width: 48%; height: 100%; background: var(--accent); animation: startup-scan 1s ease-in-out infinite alternate; }
-@keyframes startup-scan { from { transform: translateX(-100%); } to { transform: translateX(210%); } }
-
 .skip-link { position: fixed; top: 10px; left: 10px; z-index: 100; transform: translateY(-150%); padding: 10px 14px; background: white; color: black; border-radius: 6px; }
 .skip-link:focus { transform: none; }
 .scene-layer { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
@@ -36,8 +28,7 @@ button { font: inherit; }
 .scene-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 55% 45%, transparent 24%, rgba(9,11,16,.14) 64%, rgba(9,11,16,.72) 100%); }
 .content-layer, .site-header { position: relative; z-index: 1; }
 .site-header { position: fixed; inset: 0 0 auto; height: 86px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(24px, 4.5vw, 76px); z-index: 20; background: rgba(9,11,16,.78); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,.06); }
-.brand { font-weight: 800; letter-spacing: -.05em; font-size: 22px; }
-.brand span { color: var(--accent); font-size: 9px; vertical-align: top; margin-left: 2px; }
+.brand { font-weight: 700; letter-spacing: -.035em; font-size: 18px; }
 .nav { display: flex; gap: 34px; font: 500 12px/1 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .08em; }
 .nav a, .project > a, .scroll-cue, footer a { transition: color .2s ease, transform .2s ease; }
 .nav a:hover, .nav a:focus-visible, footer a:hover, footer a:focus-visible { color: var(--accent); }

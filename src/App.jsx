@@ -242,7 +242,7 @@ function Header() {
   const [open, setOpen] = useState(false)
   return (
     <header className="site-header">
-      <a className="brand" href="#top" aria-label="Shivam Choudhary, home">SC<span>®</span></a>
+      <a className="brand" href="#top" aria-label="Shivam Choudhary, home">Shivam Choudhary</a>
       <button className="menu-toggle" aria-expanded={open} aria-controls="site-nav" onClick={() => setOpen((value) => !value)}>
         {open ? 'Close' : 'Menu'}
       </button>
@@ -331,10 +331,6 @@ function App() {
   return (
     <div ref={root} id="top" className={sceneReady ? 'app-shell is-ready' : 'app-shell'}>
       <a className="skip-link" href="#main">Skip to content</a>
-      <div className="startup" role="status" aria-live="polite" aria-label={sceneReady ? 'Portfolio ready' : 'Loading portfolio'}>
-        <span className="startup-mark">SC<span>®</span></span>
-        <span className="startup-track"><span /></span>
-      </div>
       <div className="scene-layer" aria-hidden="true">
         <Scene activeProject={activeProject} scrollRef={scrollRef} pointerRef={pointerRef} reducedMotion={reducedMotion} compact={compact} onReady={markSceneReady} />
         <div className="scene-vignette" />
