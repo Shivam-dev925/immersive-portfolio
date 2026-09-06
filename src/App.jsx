@@ -415,29 +415,8 @@ function App() {
           </div>
         </section>
 
-        <section id="case-study" className="case-study">
-          <div className="case-study-inner" data-reveal>
-            <p className="section-index">04 / Case study</p>
-            <h2>Designing a calmer<br />clinical operating system.</h2>
-            <div className="case-meta">
-              <p><span>Role</span>Lead frontend engineering</p>
-              <p><span>Focus</span>Architecture, design systems, data UX</p>
-              <p><span>Outcome</span>Faster workflows with less cognitive load</p>
-            </div>
-            <div className="case-visual" role="img" aria-label="Abstract interface architecture showing connected clinical modules">
-              <div className="module module-a">Patient journey</div>
-              <div className="module module-b">Clinical workspace</div>
-              <div className="module module-c">Operational insight</div>
-              <svg viewBox="0 0 1000 520" preserveAspectRatio="none" aria-hidden="true">
-                <path d="M190 150 C350 150 330 260 500 260 S650 370 810 370" />
-                <path d="M190 150 C360 150 380 100 500 100 S690 100 810 370" />
-              </svg>
-            </div>
-          </div>
-        </section>
-
         <section id="contact" className="contact section-grid">
-          <p className="section-index">05 / Contact</p>
+          <p className="section-index">04 / Contact</p>
           <div data-reveal className="contact-copy">
             <p>Have a difficult interface or ambitious product?</p>
             <a href="mailto:chshivam815@gmail.com">Let’s make it clear.<ArrowUpRight /></a>
