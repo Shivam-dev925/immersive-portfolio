@@ -15,13 +15,9 @@ function SceneWarmup({ onReady }) {
     let cancelled = false
     let frame = 0
 
-    const warmup = async () => {
+    const warmup = () => {
       try {
-        if (typeof gl.compileAsync === 'function') {
-          await gl.compileAsync(scene, camera)
-        } else {
-          gl.compile(scene, camera)
-        }
+        gl.compile(scene, camera)
       } catch {
         // A normal rendered frame is still a safe fallback on older GPUs.
       }
@@ -193,7 +189,7 @@ function App() {
   const markSceneReady = useMemo(() => () => setSceneReady(true), [])
 
   useEffect(() => {
-    const fallback = window.setTimeout(markSceneReady, 4500)
+    const fallback = window.setTimeout(markSceneReady, 2500)
     return () => window.clearTimeout(fallback)
   }, [markSceneReady])
 
