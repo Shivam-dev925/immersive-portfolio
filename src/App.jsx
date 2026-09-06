@@ -1,4 +1,4 @@
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, MeshTransmissionMaterial, RoundedBox, Sparkles } from '@react-three/drei'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -7,6 +7,41 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
 gsap.registerPlugin(ScrollTrigger)
+
+function SceneWarmup({ onReady }) {
+  const { gl, scene, camera } = useThree()
+
+  useEffect(() => {
+    let cancelled = false
+    let frame = 0
+
+    const warmup = async () => {
+      try {
+        if (typeof gl.compileAsync === 'function') {
+          await gl.compileAsync(scene, camera)
+        } else {
+          gl.compile(scene, camera)
+        }
+      } catch {
+        // A normal rendered frame is still a safe fallback on older GPUs.
+      }
+
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(() => {
+          if (!cancelled) onReady()
+        })
+      })
+    }
+
+    warmup()
+    return () => {
+      cancelled = true
+      cancelAnimationFrame(frame)
+    }
+  }, [camera, gl, onReady, scene])
+
+  return null
+}
 
 const projects = [
   {
@@ -53,7 +88,8 @@ function GlassArtifact({ scrollRef, pointerRef }) {
         <mesh>
           <icosahedronGeometry args={[1.45, 3]} />
           <MeshTransmissionMaterial
-            backside
+            resolution={256}
+            samples={4}
             thickness={0.45}
             chromaticAberration={0.08}
             anisotropy={0.25}
@@ -112,9 +148,9 @@ function ProjectObjects({ activeProject, scrollRef, compact }) {
   )
 }
 
-function Scene({ activeProject, scrollRef, pointerRef, reducedMotion, compact }) {
+function Scene({ activeProject, scrollRef, pointerRef, reducedMotion, compact, onReady }) {
   return (
-    <Canvas camera={{ position: [0, 0, 8], fov: 42 }} dpr={compact ? [1, 1.3] : [1, 1.75]} gl={{ antialias: true, powerPreference: 'high-performance' }}>
+    <Canvas camera={{ position: [0, 0, 8], fov: 42 }} dpr={compact ? [1, 1.15] : [1, 1.5]} gl={{ antialias: true, powerPreference: 'high-performance' }}>
       <color attach="background" args={['#090b10']} />
       <fog attach="fog" args={['#090b10', 7, 18]} />
       <ambientLight intensity={1.6} />
@@ -122,7 +158,8 @@ function Scene({ activeProject, scrollRef, pointerRef, reducedMotion, compact })
       <pointLight position={[-4, -2, 3]} intensity={8} color="#8dffc3" />
       <GlassArtifact scrollRef={scrollRef} pointerRef={pointerRef} reducedMotion={reducedMotion} />
       <ProjectObjects activeProject={activeProject} scrollRef={scrollRef} compact={compact} />
-      <Sparkles count={reducedMotion ? 15 : 55} scale={12} size={1.4} speed={reducedMotion ? 0 : 0.18} opacity={0.3} />
+      <Sparkles count={reducedMotion ? 12 : 36} scale={12} size={1.4} speed={reducedMotion ? 0 : 0.18} opacity={0.3} />
+      <SceneWarmup onReady={onReady} />
     </Canvas>
   )
 }
@@ -151,7 +188,14 @@ function App() {
   const [activeProject, setActiveProject] = useState(0)
   const [reducedMotion, setReducedMotion] = useState(false)
   const [compact, setCompact] = useState(false)
+  const [sceneReady, setSceneReady] = useState(false)
   const year = useMemo(() => new Date().getFullYear(), [])
+  const markSceneReady = useMemo(() => () => setSceneReady(true), [])
+
+  useEffect(() => {
+    const fallback = window.setTimeout(markSceneReady, 4500)
+    return () => window.clearTimeout(fallback)
+  }, [markSceneReady])
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -181,6 +225,8 @@ function App() {
   }, [])
 
   useEffect(() => {
+    if (!sceneReady) return undefined
+
     const context = gsap.context(() => {
       ScrollTrigger.create({
         trigger: root.current,
@@ -201,13 +247,17 @@ function App() {
       }
     }, root)
     return () => context.revert()
-  }, [reducedMotion])
+  }, [reducedMotion, sceneReady])
 
   return (
-    <div ref={root} id="top" className="app-shell">
+    <div ref={root} id="top" className={sceneReady ? 'app-shell is-ready' : 'app-shell'}>
       <a className="skip-link" href="#main">Skip to content</a>
+      <div className="startup" role="status" aria-live="polite" aria-label={sceneReady ? 'Portfolio ready' : 'Loading portfolio'}>
+        <span className="startup-mark">SC<span>®</span></span>
+        <span className="startup-track"><span /></span>
+      </div>
       <div className="scene-layer" aria-hidden="true">
-        <Scene activeProject={activeProject} scrollRef={scrollRef} pointerRef={pointerRef} reducedMotion={reducedMotion} compact={compact} />
+        <Scene activeProject={activeProject} scrollRef={scrollRef} pointerRef={pointerRef} reducedMotion={reducedMotion} compact={compact} onReady={markSceneReady} />
         <div className="scene-vignette" />
       </div>
       <Header />
