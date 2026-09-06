@@ -105,6 +105,7 @@ h1 em { color: transparent; -webkit-text-stroke: 1px rgba(247,248,250,.62); font
 .project ul { display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; gap: 8px; }
 .project li { padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; color: #bbc0c8; font: 400 10px 'DM Mono', monospace; }
 .platform-trigger { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; color: inherit; background: transparent; border: 1px solid var(--line); border-radius: 50%; transition: color .2s ease, background .2s ease, transform .2s ease; }
+.offline-badge { align-self: start; padding: 8px 10px; color: #c8c0f4; border: 1px solid rgba(221,214,254,.3); border-radius: 999px; font: 500 9px 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .06em; }
 .project:hover .platform-trigger, .project:focus-within .platform-trigger, .project.platforms-open .platform-trigger { color: #09110e; background: var(--accent); transform: rotate(45deg); }
 .project > .platform-links { left: auto; right: 8px; bottom: 18px; grid-template-columns: repeat(var(--platform-count), minmax(126px, 1fr)); }
 .project:hover > .platform-links, .project:focus-within > .platform-links, .project.platforms-open > .platform-links { opacity: 1; transform: none; pointer-events: auto; }
@@ -148,6 +149,7 @@ footer a { display: flex; align-items: center; gap: 7px; }
   .project.active { background: linear-gradient(90deg, rgba(167,243,208,.12), rgba(9,11,16,.2)); padding-left: 16px; padding-right: 10px; }
   .project > a { grid-column: 2; }
   .platform-trigger { grid-column: 2; }
+  .offline-badge { grid-column: 2; justify-self: start; }
   .project > .platform-links { right: 10px; bottom: 30px; grid-template-columns: 1fr; width: min(210px, 62vw); }
   .contact-copy > a { font-size: clamp(42px, 13vw, 72px); }
   footer { margin-top: 100px; flex-direction: column; gap: 20px; }

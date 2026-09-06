@@ -63,6 +63,15 @@ const projects = [
       { label: 'iOS', detail: 'App Store', href: 'https://apps.apple.com/in/app/water-taxi-miami/id1545116369' },
     ],
   },
+  {
+    number: '03',
+    title: 'ADTC Management System',
+    description: 'An offline-first school operations platform that helps administrators manage student and faculty records, fees, admissions, and daily institutional workflows without an internet connection.',
+    meta: 'School operations · Fully offline',
+    tags: ['.NET', 'SQL', 'Docker'],
+    accent: '#ddd6fe',
+    platforms: [],
+  },
 ]
 
 const raxaPlatforms = [
@@ -425,15 +434,17 @@ function App() {
                 key={project.title}
                 onMouseEnter={() => setActiveProject(index)}
                 onFocusCapture={() => setActiveProject(index)}
-                onClick={() => setOpenPlatforms((value) => value === `project-${index}` ? null : `project-${index}`)}
+                onClick={() => {
+                  if (project.platforms.length > 0) setOpenPlatforms((value) => value === `project-${index}` ? null : `project-${index}`)
+                }}
                 onKeyDown={(event) => {
-                  if ((event.key === 'Enter' || event.key === ' ') && event.target === event.currentTarget) {
+                  if (project.platforms.length > 0 && (event.key === 'Enter' || event.key === ' ') && event.target === event.currentTarget) {
                     event.preventDefault()
                     setOpenPlatforms((value) => value === `project-${index}` ? null : `project-${index}`)
                   }
                 }}
                 tabIndex="0"
-                aria-expanded={openPlatforms === `project-${index}`}
+                aria-expanded={project.platforms.length > 0 ? openPlatforms === `project-${index}` : undefined}
               >
                 <p className="project-number">{project.number}</p>
                 <div className="project-copy">
@@ -442,8 +453,12 @@ function App() {
                   <p>{project.description}</p>
                   <ul>{project.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
                 </div>
-                <button className="platform-trigger" type="button" aria-label={`Show ${project.title} platform links`}><ArrowUpRight /></button>
-                <PlatformLinks platforms={project.platforms} label={project.title} />
+                {project.platforms.length > 0 ? (
+                  <>
+                    <button className="platform-trigger" type="button" aria-label={`Show ${project.title} platform links`}><ArrowUpRight /></button>
+                    <PlatformLinks platforms={project.platforms} label={project.title} />
+                  </>
+                ) : <span className="offline-badge">Offline</span>}
               </article>
             ))}
           </div>
