@@ -2,7 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Float, MeshTransmissionMaterial, RoundedBox, Sparkles } from '@react-three/drei'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ArrowDown, ArrowUpRight, Github, Mail, MousePointer2 } from 'lucide-react'
+import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MousePointer2 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 
@@ -423,7 +423,7 @@ function App() {
           </div>
           <footer>
             <p>© {year} Shivam Choudhary</p>
-            <div><a href="https://github.com/Shivam-dev925" target="_blank" rel="noreferrer"><Github size={17} /> GitHub</a><a href="mailto:chshivam815@gmail.com"><Mail size={17} /> Email</a></div>
+            <div><a href="https://github.com/Shivam-dev925" target="_blank" rel="noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/shivam-choudhary-058061218/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn</a><a href="mailto:chshivam815@gmail.com"><Mail size={17} /> Email</a></div>
           </footer>
         </section>
       </main>
