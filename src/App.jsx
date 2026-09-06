@@ -57,7 +57,7 @@ const projects = [
     title: 'Water Taxi Miami',
     description: 'An end-to-end ticket booking experience spanning one-way and round-trip journeys, seat selection, and payment confirmation.',
     meta: 'Contract · Feb 2024—Feb 2025',
-    tags: ['React', 'Booking UX', 'Frontend'],
+    tags: ['Swift', 'iOS', 'Booking UX'],
     accent: '#bfdbfe',
     platforms: [
       { label: 'iOS', detail: 'App Store', href: 'https://apps.apple.com/in/app/water-taxi-miami/id1545116369' },
